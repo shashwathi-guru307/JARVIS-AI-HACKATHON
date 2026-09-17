@@ -5,8 +5,9 @@ import Header                 from './components/Header';
 import Dashboard              from './pages/Dashboard';
 import ConnectionStatus       from './components/ConnectionStatus';
 import LoginScreen            from './components/LoginScreen';
+import { API_BASE_URL }       from './config';
 
-const STATUS_URL = 'http://localhost:8000/telemetry/status';
+const STATUS_URL = `${API_BASE_URL}/telemetry/status`;
 const POLL_MS    = 5000;
 
 export default function App() {

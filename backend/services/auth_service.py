@@ -1,4 +1,5 @@
 import logging
+import os
 from datetime import datetime, timedelta, timezone
 
 from fastapi import Depends, HTTPException, status
@@ -8,6 +9,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from backend.utils.config import (
+    get_demo_mode,
     get_jwt_secret,
     get_jwt_expiration_minutes,
 )
@@ -23,31 +25,28 @@ pwd_context = CryptContext(
 security = HTTPBearer()
 
 
-# ============================================================
-# DEMO USERS
-# ============================================================
-# Demo credentials:
-# admin    / admin123
-# operator / operator123
-# viewer   / viewer123
-#
-# In production, users should be loaded from a secure database.
-# ============================================================
+def _demo_password(name: str, development_default: str) -> str:
+    """Read demo credentials from env; defaults are available only in demo mode."""
+    value = os.getenv(name, "")
+    if value:
+        return value
+    return development_default if get_demo_mode() else ""
 
-DEMO_USERS = {
-    "admin": {
-        "hashed": pwd_context.hash("admin123"),
-        "role": "ADMIN",
-    },
-    "operator": {
-        "hashed": pwd_context.hash("operator123"),
-        "role": "OPERATOR",
-    },
-    "viewer": {
-        "hashed": pwd_context.hash("viewer123"),
-        "role": "VIEWER",
-    },
-}
+
+def _build_demo_users() -> dict:
+    users = {}
+    for username, role, env_name, development_default in (
+        ("admin", "ADMIN", "DEMO_ADMIN_PASSWORD", "admin123"),
+        ("operator", "OPERATOR", "DEMO_OPERATOR_PASSWORD", "operator123"),
+        ("viewer", "VIEWER", "DEMO_VIEWER_PASSWORD", "viewer123"),
+    ):
+        password = _demo_password(env_name, development_default)
+        if password:
+            users[username] = {"hashed": pwd_context.hash(password), "role": role}
+    return users
+
+
+DEMO_USERS = _build_demo_users()
 
 
 # ============================================================

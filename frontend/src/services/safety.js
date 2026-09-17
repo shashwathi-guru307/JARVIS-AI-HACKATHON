@@ -1,4 +1,6 @@
-const WS_URL = "ws://localhost:8000/ws/safety";
+import { API_BASE_URL, WS_BASE_URL } from "../config";
+
+const WS_URL = `${WS_BASE_URL}/ws/safety`;
 const RECONNECT_DELAY_MS = 4000;
 
 export function createSafetySocket({ onMessage, onOpen, onClose, onError }) {
@@ -33,7 +35,7 @@ export function createSafetySocket({ onMessage, onOpen, onClose, onError }) {
 }
 
 export async function triggerEmergency(deviceId) {
-  const res = await fetch("http://localhost:8000/safety/emergency", {
+  const res = await fetch(`${API_BASE_URL}/safety/emergency`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ device_id: deviceId, trigger: "MANUAL_SOS" }),
@@ -42,6 +44,6 @@ export async function triggerEmergency(deviceId) {
 }
 
 export async function resetEmergency() {
-  const res = await fetch("http://localhost:8000/safety/emergency/reset", { method: "POST" });
+  const res = await fetch(`${API_BASE_URL}/safety/emergency/reset`, { method: "POST" });
   return res.json();
 }

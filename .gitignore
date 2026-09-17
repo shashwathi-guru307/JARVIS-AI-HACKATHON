@@ -1,8 +1,12 @@
 # Environment variables — never commit these
 .env
+!.env.example
+.env.*
+!.env.example
 
 # Python cache
 __pycache__/
+**pycache**/
 *.pyc
 *.pyo
 *.pyd
@@ -10,8 +14,11 @@ __pycache__/
 
 # Virtual environment
 venv/
+venv312/
 env/
 .venv/
+.venv-*/
+.venv2/
 
 # IDE
 .vscode/
@@ -21,3 +28,8 @@ env/
 .DS_Store
 Thumbs.db
 .env
+node_modules/
+dist/
+build/
+*.log
+ml/models/

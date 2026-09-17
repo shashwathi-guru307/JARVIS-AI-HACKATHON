@@ -1,5 +1,6 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../config";
 
 export default function EnergyForecast({ history }) {
   const [forecast, setForecast] = useState(null);
@@ -7,7 +8,7 @@ export default function EnergyForecast({ history }) {
   useEffect(() => {
     async function fetchForecast() {
       try {
-        const res = await fetch("http://localhost:8000/energy/forecast");
+        const res = await fetch(`${API_BASE_URL}/energy/forecast`);
         if (res.ok) setForecast(await res.json());
       } catch { /* backend unreachable */ }
     }

@@ -1,7 +1,8 @@
 // useMaintenance.js — polls maintenance and digital-twin APIs
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../config";
 
-const BASE  = "http://localhost:8000";
+const BASE  = API_BASE_URL;
 const POLL  = 5000;   // ms — matches backend PREDICTION_INTERVAL
 
 export function useMaintenance() {

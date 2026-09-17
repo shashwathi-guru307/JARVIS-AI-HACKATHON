@@ -4,8 +4,9 @@
  * to POST /agent/analyze and displays the narrative_answer.
  */
 import { useState, useCallback } from "react";
+import { API_BASE_URL } from "../config";
 
-const BASE = "http://localhost:8000";
+const BASE = API_BASE_URL;
 const QUICK_QUESTIONS = [
   "How is the system doing right now?",
   "What is the biggest problem?",

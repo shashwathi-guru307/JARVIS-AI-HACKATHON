@@ -1,6 +1,6 @@
 import { getStatusColors } from "../utils/statusColors";
 
-export default function SystemTimeline({ snapshot, alerts, timeline, secHistory }) {
+export default function SystemTimeline({ alerts, timeline, secHistory }) {
   // Merge all timestamped entries into one timeline
   const entries = [];
 

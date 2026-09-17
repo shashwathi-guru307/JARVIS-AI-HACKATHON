@@ -1,4 +1,6 @@
-const WS_URL = "ws://localhost:8000/ws/energy";
+import { WS_BASE_URL } from "../config";
+
+const WS_URL = `${WS_BASE_URL}/ws/energy`;
 const RECONNECT_DELAY_MS = 4000;
 
 export function createEnergySocket({ onMessage, onOpen, onClose, onError }) {

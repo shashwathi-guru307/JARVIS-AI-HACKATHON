@@ -1,5 +1,6 @@
 import { getStatusColors } from "../utils/statusColors";
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../config";
 
 export default function EnergyOptimization({ optimization, alerts }) {
   const [schedule, setSchedule] = useState([]);
@@ -7,7 +8,7 @@ export default function EnergyOptimization({ optimization, alerts }) {
   useEffect(() => {
     async function fetchSchedule() {
       try {
-        const res = await fetch("http://localhost:8000/energy/schedule");
+        const res = await fetch(`${API_BASE_URL}/energy/schedule`);
         if (res.ok) { const d = await res.json(); setSchedule(d.schedule ?? []); }
       } catch { /* backend unreachable */ }
     }

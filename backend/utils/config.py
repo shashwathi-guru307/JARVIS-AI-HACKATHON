@@ -1,4 +1,3 @@
-# config.py — loads and validates environment variables at startup
 import os
 from dotenv import load_dotenv
 
@@ -6,18 +5,22 @@ load_dotenv()
 
 
 def get_api_key() -> str:
-    key = os.getenv("AI_API_KEY", "")
-    if not key or key == "your_openai_api_key_here":
-        raise ValueError("AI_API_KEY is not configured in your .env file.")
+    key = os.getenv("GROQ_API_KEY", "")
+    if not key or key == "your_groq_api_key_here":
+        raise ValueError("GROQ_API_KEY is not configured in your .env file.")
     return key
 
 
 def get_model() -> str:
-    return os.getenv("AI_MODEL", "gpt-4o")
+    return os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 
 
 def get_vision_mode() -> str:
     return os.getenv("VISION_MODE", "local").lower()
+
+
+def get_vision_enabled() -> bool:
+    return os.getenv("VISION_ENABLED", "true").lower() == "true"
 
 
 def get_vision_interval() -> int:
@@ -52,7 +55,17 @@ def get_demo_scenario() -> str:
     """
     return os.getenv("DEMO_SCENARIO", "normal").lower()
 def get_jwt_secret() -> str:
-    return os.getenv("JWT_SECRET", "change-this-to-a-random-secret-in-production")
+    secret = os.getenv("JWT_SECRET", "").strip()
+    insecure_values = {
+        "",
+        "change-me-in-production",
+        "change-this-to-a-random-secret-in-production",
+    }
+    if secret in insecure_values:
+        if get_demo_mode():
+            return "local-development-jwt-secret"
+        raise ValueError("JWT_SECRET must be configured with a secure value when DEMO_MODE is false.")
+    return secret
 
 def get_jwt_expiration_minutes() -> int:
     try:
@@ -69,40 +82,17 @@ def get_rate_limit_requests() -> int:
 def get_demo_mode() -> bool:
     return os.getenv("DEMO_MODE", "true").lower() == "true"
 
-"""
-Centralized J.A.R.V.I.S. configuration.
-All environment-driven settings live here.
-"""
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-# ── Demo / Live mode ──────────────────────────────────────────────────────────
 DEMO_MODE: bool = os.getenv("DEMO_MODE", "true").lower() == "true"
-DEMO_SCENARIO: str = os.getenv("DEMO_SCENARIO", "NORMAL")  # see SCENARIO list below
-
-# ── Intelligence toggles ──────────────────────────────────────────────────────
+DEMO_SCENARIO: str = os.getenv("DEMO_SCENARIO", "NORMAL")
 AI_ENABLED: bool     = os.getenv("AI_ENABLED", "true").lower() == "true"
-VISION_ENABLED: bool = os.getenv("VISION_ENABLED", "true").lower() == "true"
-
-# ── History limits ────────────────────────────────────────────────────────────
+VISION_ENABLED: bool = get_vision_enabled()
 EVENT_HISTORY_LIMIT: int = int(os.getenv("EVENT_HISTORY_LIMIT", "200"))
 ALERT_HISTORY_LIMIT: int = int(os.getenv("ALERT_HISTORY_LIMIT", "50"))
 TELEMETRY_HISTORY:   int = int(os.getenv("TELEMETRY_HISTORY",   "60"))
-
-# ── System update interval (seconds) ─────────────────────────────────────────
 SYSTEM_UPDATE_INTERVAL: int = int(os.getenv("SYSTEM_UPDATE_INTERVAL", "5"))
-
-# ── Auth ──────────────────────────────────────────────────────────────────────
-JWT_SECRET:              str = os.getenv("JWT_SECRET", "change-me-in-production")
-JWT_EXPIRATION_MINUTES:  int = int(os.getenv("JWT_EXPIRATION_MINUTES", "60"))
-
-# ── Rate limiting ─────────────────────────────────────────────────────────────
 RATE_LIMIT_REQUESTS:      int = int(os.getenv("RATE_LIMIT_REQUESTS",      "60"))
 RATE_LIMIT_WINDOW_SECONDS: int = int(os.getenv("RATE_LIMIT_WINDOW_SECONDS", "60"))
-
-# ── Valid demo scenarios ──────────────────────────────────────────────────────
+JWT_EXPIRATION_MINUTES: int = get_jwt_expiration_minutes()
 VALID_SCENARIOS = {
     "NORMAL",
     "MACHINE_DEGRADATION",

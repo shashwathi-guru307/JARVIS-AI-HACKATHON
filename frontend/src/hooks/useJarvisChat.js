@@ -6,8 +6,9 @@
  * agent is always grounded in real data.
  */
 import { useState, useCallback, useRef } from "react";
+import { API_BASE_URL } from "../config";
 
-const BASE = "http://localhost:8000";
+const BASE = API_BASE_URL;
 const MAX_HISTORY = 6; // turns kept for follow-up context
 
 export function useJarvisChat(token) {
@@ -29,7 +30,9 @@ export function useJarvisChat(token) {
         const data = await res.json();
         return data.context ?? "";
       }
-    } catch {}
+    } catch {
+      return "";
+    }
     return "";
   }, [getHeaders]);
 
@@ -89,7 +92,7 @@ export function useJarvisChat(token) {
       setLoading(false);
       return { reply, raw: data };
 
-    } catch (e) {
+    } catch {
       const errMsg = "J.A.R.V.I.S. backend is unavailable. Deterministic analysis continues.";
       setError(errMsg);
       setMessages(prev => [...prev, { role: "assistant", content: errMsg }]);

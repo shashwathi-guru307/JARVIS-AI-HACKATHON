@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../config";
 
-const BASE   = "http://localhost:8000";
+const BASE   = API_BASE_URL;
 const POLL   = 5000;
 
 export function useSystemStatus(token) {

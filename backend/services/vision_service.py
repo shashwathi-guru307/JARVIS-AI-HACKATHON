@@ -7,7 +7,7 @@ from backend.vision.camera import CameraService
 from backend.vision.processor import MotionDetector, resize_frame, frame_to_base64
 from backend.vision.sample_data.generate_sample import make_demo_frame
 from backend.models.vision_models import VisionAnalysis, VisionStatus
-from backend.utils.config import get_vision_mode, get_vision_interval
+from backend.utils.config import get_vision_enabled, get_vision_mode, get_vision_interval
 
 logger = logging.getLogger(__name__)
 
@@ -90,6 +90,8 @@ def _analyse_demo() -> VisionAnalysis:
 # ── Public API ────────────────────────────────────────────────────────────────
 
 def get_camera_status() -> str:
+    if not get_vision_enabled():
+        return "DISABLED"
     mode = get_vision_mode()
     if mode == "demo":
         return "DEMO"
@@ -123,7 +125,7 @@ def run_analysis() -> VisionAnalysis:
 
     _processing = True
     try:
-        if mode == "demo":
+        if not get_vision_enabled() or mode == "demo":
             result = _analyse_demo()
         else:
             # Try to open camera if not already open

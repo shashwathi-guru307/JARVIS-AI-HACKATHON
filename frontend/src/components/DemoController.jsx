@@ -3,8 +3,9 @@
  * Lets the presenter switch scenarios from the dashboard without restarting the server.
  */
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../config";
 
-const BASE = "http://localhost:8000";
+const BASE = API_BASE_URL;
 
 const SCENARIO_LABELS = {
   NORMAL:             { label: "NORMAL",             color: "emerald" },

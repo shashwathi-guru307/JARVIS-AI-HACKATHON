@@ -37,6 +37,7 @@ export function useVoiceAccess({ onTranscript, enabled = true }) {
   const recognitionRef  = useRef(null);
   const isOnRef         = useRef(false);   // true while voice access is enabled
   const restartTimerRef = useRef(null);
+  const startListeningRef = useRef(null);
   const synth           = useRef(typeof window !== "undefined" ? window.speechSynthesis : null);
 
   // ── TTS ────────────────────────────────────────────────────────────────────
@@ -69,11 +70,18 @@ export function useVoiceAccess({ onTranscript, enabled = true }) {
     synth.current?.cancel();
   }, []);
 
+  const scheduleRestart = useCallback(() => {
+    clearTimeout(restartTimerRef.current);
+    restartTimerRef.current = setTimeout(() => {
+      if (isOnRef.current) startListeningRef.current?.();
+    }, 400);
+  }, []);
+
   // ── Speech recognition lifecycle ───────────────────────────────────────────
   const startListening = useCallback(() => {
     if (!SpeechRecognition || !isOnRef.current) return;
     if (recognitionRef.current) {
-      try { recognitionRef.current.abort(); } catch (_) {}
+      try { recognitionRef.current.abort(); } catch { return; }
     }
 
     const rec = new SpeechRecognition();
@@ -118,21 +126,18 @@ export function useVoiceAccess({ onTranscript, enabled = true }) {
     recognitionRef.current = rec;
     try {
       rec.start();
-    } catch (e) {
+    } catch {
       setError("Could not start speech recognition. Try refreshing.");
       setVoiceState(VOICE_STATES.ERROR);
     }
-  }, [onTranscript]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const scheduleRestart = useCallback(() => {
-    clearTimeout(restartTimerRef.current);
-    restartTimerRef.current = setTimeout(() => {
-      if (isOnRef.current) startListening();
-    }, 400);
+  }, [onTranscript, scheduleRestart, voiceState]);
+  useEffect(() => {
+    startListeningRef.current = startListening;
   }, [startListening]);
 
   // ── Public ON/OFF toggle ───────────────────────────────────────────────────
   const turnOn = useCallback(() => {
+    if (!enabled) return;
     if (!SpeechRecognition) {
       setError("Speech recognition is not supported in this browser. Text input is still available.");
       setSupported(false);
@@ -141,13 +146,13 @@ export function useVoiceAccess({ onTranscript, enabled = true }) {
     setError(null);
     isOnRef.current = true;
     startListening();
-  }, [startListening]);
+  }, [enabled, startListening]);
 
   const turnOff = useCallback(() => {
     isOnRef.current = false;
     clearTimeout(restartTimerRef.current);
     stopSpeaking();
-    try { recognitionRef.current?.abort(); } catch (_) {}
+    try { recognitionRef.current?.abort(); } catch { setError(null); }
     recognitionRef.current = null;
     setVoiceState(VOICE_STATES.OFF);
     setTranscript("");
@@ -155,11 +160,12 @@ export function useVoiceAccess({ onTranscript, enabled = true }) {
 
   // ── Cleanup on unmount ─────────────────────────────────────────────────────
   useEffect(() => {
+    const currentSynth = synth.current;
     return () => {
       isOnRef.current = false;
       clearTimeout(restartTimerRef.current);
-      try { recognitionRef.current?.abort(); } catch (_) {}
-      synth.current?.cancel();
+      try { recognitionRef.current?.abort(); } catch { return; }
+      currentSynth?.cancel();
     };
   }, []);
 

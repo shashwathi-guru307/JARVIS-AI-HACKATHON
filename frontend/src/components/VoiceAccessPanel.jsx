@@ -31,23 +31,27 @@ export default function VoiceAccessPanel({ token }) {
   const [textInput, setTextInput] = useState("");
   const [isVoiceOn, setIsVoiceOn] = useState(false);
   const bottomRef = useRef(null);
+  const voiceRef = useRef(null);
 
   const { messages, loading, error: chatError, sendCommand, clearHistory } = useJarvisChat(token);
 
   // When the conversational agent replies, speak it and update the voice state
   const handleReply = useCallback(async (command) => {
-    voice.setVoiceState(VOICE_STATES.EXECUTING);
+    voiceRef.current?.setVoiceState(VOICE_STATES.EXECUTING);
     const result = await sendCommand(command, "chat");
     if (result?.reply && isVoiceOn) {
-      voice.speak(result.reply);
+      voiceRef.current?.speak(result.reply);
     } else if (!isVoiceOn) {
-      voice.setVoiceState(VOICE_STATES.OFF);
+      voiceRef.current?.setVoiceState(VOICE_STATES.OFF);
     }
-  }, [isVoiceOn, sendCommand]); // eslint-disable-line
+  }, [isVoiceOn, sendCommand]);
 
   const voice = useVoiceAccess({
     onTranscript: handleReply,
   });
+  useEffect(() => {
+    voiceRef.current = voice;
+  }, [voice]);
 
   // Sync voice on/off
   const toggleVoice = useCallback(() => {

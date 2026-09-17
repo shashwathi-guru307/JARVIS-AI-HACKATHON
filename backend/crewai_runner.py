@@ -208,6 +208,18 @@ Use the live context when answering.
                     "reason": ai_result.reason,
                     "recommended_action": ai_result.recommended_action,
                     "confidence": ai_result.confidence,
+                    "narrative_answer": " ".join(
+                        part
+                        for part in (
+                            ai_result.summary,
+                            f"Reason: {ai_result.reason}" if ai_result.reason else None,
+                            (
+                                f"Recommendation: {ai_result.recommended_action}"
+                                if ai_result.recommended_action else None
+                            ),
+                        )
+                        if part
+                    ),
                     "context_used": system_context_local,
                 }
 

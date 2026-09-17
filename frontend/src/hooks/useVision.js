@@ -14,7 +14,6 @@ export function useVision(enabled) {
     if (!enabled) {
       socketRef.current?.destroy();
       socketRef.current = null;
-      setConnected(false);
       return;
     }
 
@@ -44,5 +43,5 @@ export function useVision(enabled) {
     return () => socket.destroy();
   }, [enabled]);
 
-  return { visionConnected: connected, latestVision: latest, visionAlerts };
+  return { visionConnected: enabled && connected, latestVision: latest, visionAlerts };
 }

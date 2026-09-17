@@ -1,5 +1,7 @@
 // websocket.js — single WebSocket manager, not recreated on every render
-const WS_URL = 'ws://localhost:8000/ws/telemetry';
+import { WS_BASE_URL } from '../config';
+
+const WS_URL = `${WS_BASE_URL}/ws/telemetry`;
 const RECONNECT_DELAY_MS = 3000;
 
 export function createTelemetrySocket({ onMessage, onOpen, onClose, onError }) {

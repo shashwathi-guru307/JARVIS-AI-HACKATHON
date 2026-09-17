@@ -107,6 +107,10 @@ cp .env.example .env
 uvicorn backend.main:app --reload
 ```
 
+For production, use `uvicorn backend.main:app --host 0.0.0.0 --port $PORT` without reload or multiple workers.
+
+The active predictive-maintenance artifact is `backend/vision/ml/models/predictive_maintenance.joblib`, as loaded by `backend/vision/ml/predictive_model.py`. The duplicate `ml/models/predictive_maintenance.joblib` is not referenced by the application and is excluded from the release.
+
 Visit: http://localhost:8000/docs
 
 ---

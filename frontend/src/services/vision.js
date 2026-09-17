@@ -1,6 +1,8 @@
 // vision.js — REST helpers and WebSocket factory for vision data
-const BASE_URL = "http://localhost:8000";
-const WS_URL   = "ws://localhost:8000/ws/vision";
+import { API_BASE_URL, WS_BASE_URL } from "../config";
+
+const BASE_URL = API_BASE_URL;
+const WS_URL   = `${WS_BASE_URL}/ws/vision`;
 const RECONNECT_DELAY_MS = 4000;
 
 export async function fetchVisionStatus() {

@@ -5,7 +5,7 @@ import { getStatusColors } from "../utils/statusColors";
 
 export default function VisionPanel() {
   const [enabled, setEnabled] = useState(false);
-  const { visionConnected, latestVision, visionAlerts } = useVision(enabled);
+  const { latestVision, visionAlerts } = useVision(enabled);
 
   const risk      = latestVision?.risk_level ?? "NORMAL";
   const colors    = getStatusColors(risk);
