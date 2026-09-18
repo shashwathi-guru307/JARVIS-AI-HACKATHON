@@ -37,35 +37,49 @@ export default function TargetCursor({
     gsap.set(cursor, { x: innerWidth / 2, y: innerHeight / 2 });
     spinRef.current = gsap.timeline({ repeat: -1 }).to(cursor, { rotation: "+=360", duration: spinDuration, ease: "none" });
 
+    const alignTarget = (target, x, y, duration = hoverDuration) => {
+      if (!target) return;
+      const rect = target.getBoundingClientRect();
+      const positions = [[rect.left - 3, rect.top - 3], [rect.right - 9, rect.top - 3], [rect.right - 9, rect.bottom - 9], [rect.left - 3, rect.bottom - 9]];
+      corners.forEach((corner, index) => gsap.to(corner, { x: positions[index][0] - x, y: positions[index][1] - y, duration, ease: "power2.out", overwrite: true }));
+    };
+
     const resetCorners = () => {
       activeRef.current = null;
       spinRef.current?.resume();
       gsap.to(corners, { x: 0, y: 0, borderColor: cursorColor, duration: hoverDuration, overwrite: true });
       gsap.to(dotRef.current, { backgroundColor: cursorColor, duration: hoverDuration });
     };
-    const onMove = (event) => move(event.clientX, event.clientY);
+    const onMove = (event) => {
+      move(event.clientX, event.clientY);
+      if (activeRef.current) alignTarget(activeRef.current, event.clientX, event.clientY, parallaxOn ? 0.12 : 0);
+    };
     const onOver = (event) => {
       const target = event.target.closest?.(targetSelector);
       if (!target || activeRef.current === target) return;
       activeRef.current = target;
       spinRef.current?.pause();
       gsap.set(cursor, { rotation: 0 });
-      const rect = target.getBoundingClientRect();
-      const positions = [[rect.left - 3, rect.top - 3], [rect.right - 12 + 3, rect.top - 3], [rect.right - 12 + 3, rect.bottom - 12 + 3], [rect.left - 3, rect.bottom - 12 + 3]];
-      corners.forEach((corner, index) => gsap.to(corner, { x: positions[index][0] - (gsap.getProperty(cursor, "x") || 0), y: positions[index][1] - (gsap.getProperty(cursor, "y") || 0), duration: hoverDuration, ease: "power2.out", overwrite: true }));
+      alignTarget(target, event.clientX, event.clientY);
       gsap.to(corners, { borderColor: cursorColorOnTarget, duration: hoverDuration });
       gsap.to(dotRef.current, { backgroundColor: cursorColorOnTarget, duration: hoverDuration });
     };
     const onDown = () => gsap.to([cursor, dotRef.current], { scale: 0.8, duration: 0.15 });
     const onUp = () => gsap.to([cursor, dotRef.current], { scale: 1, duration: 0.2 });
+    const onScroll = () => activeRef.current && alignTarget(activeRef.current, gsap.getProperty(cursor, "x"), gsap.getProperty(cursor, "y"), 0.1);
+    const onResize = () => activeRef.current && alignTarget(activeRef.current, gsap.getProperty(cursor, "x"), gsap.getProperty(cursor, "y"), 0.1);
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseover", onOver);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
     window.addEventListener("mousedown", onDown);
     window.addEventListener("mouseup", onUp);
     document.body.addEventListener("mouseleave", resetCorners);
     return () => {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseover", onOver);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
       window.removeEventListener("mousedown", onDown);
       window.removeEventListener("mouseup", onUp);
       document.body.removeEventListener("mouseleave", resetCorners);
