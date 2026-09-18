@@ -115,12 +115,12 @@ export default function IncidentResolution({ token, incident, onChange }) {
 
       {incident.status === "AWAITING_APPROVAL" && (
         <div className="flex flex-wrap gap-2">
-          <button onClick={() => request("approve")} disabled={busy} className="text-[10px] tracking-wider px-3 py-2 rounded border text-emerald-400 border-emerald-500/40">APPROVE REMEDIATION</button>
-          <button onClick={() => request("reject")} disabled={busy} className="text-[10px] tracking-wider px-3 py-2 rounded border text-red-400 border-red-500/40">REJECT</button>
+          <button onClick={() => request("approve")} disabled={busy} className="cursor-target text-[10px] tracking-wider px-3 py-2 rounded border text-emerald-400 border-emerald-500/40">APPROVE REMEDIATION</button>
+          <button onClick={() => request("reject")} disabled={busy} className="cursor-target text-[10px] tracking-wider px-3 py-2 rounded border text-red-400 border-red-500/40">REJECT</button>
         </div>
       )}
-      {incident.status === "APPROVED" && <button onClick={() => request("execute")} disabled={busy} className="text-[10px] tracking-wider px-3 py-2 rounded border text-cyan-400 border-cyan-500/40">EXECUTE SAFE SIMULATION</button>}
-      {incident.status === "REMEDIATING" && <button onClick={() => request("verify")} disabled={busy} className="text-[10px] tracking-wider px-3 py-2 rounded border text-cyan-400 border-cyan-500/40">VERIFY RESULT</button>}
+      {incident.status === "APPROVED" && <button onClick={() => request("execute")} disabled={busy} className="cursor-target text-[10px] tracking-wider px-3 py-2 rounded border text-cyan-400 border-cyan-500/40">EXECUTE SAFE SIMULATION</button>}
+      {incident.status === "REMEDIATING" && <button onClick={() => request("verify")} disabled={busy} className="cursor-target text-[10px] tracking-wider px-3 py-2 rounded border text-cyan-400 border-cyan-500/40">VERIFY RESULT</button>}
 
       {(incident.action_status !== "NOT_STARTED" || incident.verification_status !== "NOT_STARTED") && (
         <div className="border border-slate-800 rounded p-3 text-xs text-slate-400">

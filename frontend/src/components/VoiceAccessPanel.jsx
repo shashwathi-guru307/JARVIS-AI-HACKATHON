@@ -107,7 +107,7 @@ export default function VoiceAccessPanel({ token, voiceEnabled = true }) {
       <button
         onClick={toggleVoice}
         disabled={!voice.supported && !voice.isOn}
-        className={`w-full py-2 rounded border text-xs tracking-widest font-bold transition-all duration-200
+        className={`cursor-target w-full py-2 rounded border text-xs tracking-widest font-bold transition-all duration-200
           ${voice.isOn
             ? "border-red-500/60 bg-red-500/10 text-red-400 hover:bg-red-500/20"
             : "border-cyan-500/40 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20"
@@ -137,7 +137,7 @@ export default function VoiceAccessPanel({ token, voiceEnabled = true }) {
             key={q}
             onClick={() => handleText(q)}
             disabled={loading}
-            className="text-[9px] tracking-wide px-2 py-0.5 rounded border border-slate-700
+            className="cursor-target text-[9px] tracking-wide px-2 py-0.5 rounded border border-slate-700
                        text-slate-500 hover:text-cyan-400 hover:border-cyan-500/40 transition-colors
                        disabled:opacity-40"
           >
@@ -203,7 +203,7 @@ export default function VoiceAccessPanel({ token, voiceEnabled = true }) {
         <button
           onClick={() => handleText()}
           disabled={loading || !textInput.trim()}
-          className="px-3 py-1.5 rounded bg-cyan-500/20 text-cyan-400 text-xs tracking-wider
+          className="cursor-target px-3 py-1.5 rounded bg-cyan-500/20 text-cyan-400 text-xs tracking-wider
                      border border-cyan-500/40 hover:bg-cyan-500/30 transition-colors
                      disabled:opacity-40"
         >

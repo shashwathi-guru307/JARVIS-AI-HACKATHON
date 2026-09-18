@@ -32,6 +32,7 @@ import MachineHealthPanel    from '../components/MachineHealthPanel';
 import LiveIncidentFeed      from '../components/LiveIncidentFeed';
 import JarvisCorePanel       from '../components/JarvisCorePanel';
 import PlantOperationsPanel  from '../components/PlantOperationsPanel';
+import TargetCursor           from '../components/TargetCursor';
 import OfflineState          from '../components/OfflineState';
 import VoiceAccessPanel      from '../components/VoiceAccessPanel';
 import { useMaintenance }    from '../hooks/useMaintenance';
@@ -101,6 +102,7 @@ export default function Dashboard({ connected, latest, history, alerts, streamSt
 
   return (
     <div className="mc-shell">
+      {settings.targetCursor && <TargetCursor spinDuration={2} hideDefaultCursor parallaxOn cursorColor="#ffffff" cursorColorOnTarget="#5ee7f4" />}
       <ManufacturingSidebar activeSection={activeSection} onNavigate={navigateTo} />
       <div className="mc-workspace">
         <ManufacturingTopBar security={security} notifications={{ open: notificationsOpen, items: notifications, close: () => setNotificationsOpen(false), openItem: () => setNotificationsOpen(false) }} unreadCount={readNotifications ? 0 : notifications.length} onNotificationToggle={() => { setNotificationsOpen((open) => !open); setReadNotifications(true); }} settings={{ open: settingsOpen, values: settings, toggle: () => setSettingsOpen((open) => !open), close: () => setSettingsOpen(false) }} onSettingChange={updateSetting} />

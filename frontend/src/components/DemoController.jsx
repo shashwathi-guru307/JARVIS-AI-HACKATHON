@@ -90,7 +90,7 @@ export default function DemoController({ token, onIncident }) {
         <p className="text-[10px] tracking-widest text-amber-400/80">MANUFACTURING DEMO CONTROLLER</p>
       </div>
 
-      <button onClick={runIncident} disabled={loading} className="w-full text-[10px] tracking-widest px-3 py-2 rounded border border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 disabled:opacity-50">
+      <button onClick={runIncident} disabled={loading} className="cursor-target w-full text-[10px] tracking-widest px-3 py-2 rounded border border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 disabled:opacity-50">
         RUN MANUFACTURING INCIDENT
       </button>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
@@ -107,7 +107,7 @@ export default function DemoController({ token, onIncident }) {
               key={key}
               onClick={() => activate(key)}
               disabled={loading || active}
-              className={`text-[9px] tracking-wider px-2 py-1.5 rounded border transition-colors
+              className={`cursor-target text-[9px] tracking-wider px-2 py-1.5 rounded border transition-colors
                           disabled:opacity-60 ${colorMap[meta.color]}`}
             >
               {meta.label}
