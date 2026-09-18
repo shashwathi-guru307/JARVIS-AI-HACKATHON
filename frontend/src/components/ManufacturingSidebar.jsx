@@ -13,7 +13,7 @@ const ITEMS = [
   [Settings, "Settings"],
 ];
 
-export default function ManufacturingSidebar() {
+export default function ManufacturingSidebar({ activeSection = "Command Center", onNavigate }) {
   return (
     <aside className="mc-sidebar">
       <div className="mc-brand">
@@ -26,7 +26,7 @@ export default function ManufacturingSidebar() {
       <div className="mc-side-label">OPERATIONS CONSOLE</div>
       <nav className="mc-nav" aria-label="Manufacturing navigation">
         {ITEMS.map(([Icon, label], index) => (
-          <button key={label} className={`mc-nav-item ${index === 0 ? "active" : ""}`} type="button">
+          <button key={label} className={`mc-nav-item ${activeSection === label ? "active" : ""}`} type="button" onClick={() => onNavigate?.(label)}>
             <Icon size={15} strokeWidth={1.6} aria-hidden="true" />
             <span>{label}</span>
             {label === "Incidents" && <span className="mc-nav-count">{index === 3 ? "01" : ""}</span>}
