@@ -46,6 +46,7 @@ class TokenResponse(BaseModel):
 
 
 class AuditEntry(BaseModel):
+    audit_id: str | None = None
     timestamp:  datetime
     event_type: str
     user_id:    str

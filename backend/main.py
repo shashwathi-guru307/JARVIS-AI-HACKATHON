@@ -13,6 +13,8 @@ from backend.routes.safety        import router as safety_router
 from backend.routes.security      import router as security_router
 from backend.routes.demo          import router as demo_router
 from backend.routes.voice_context import router as voice_context_router
+from backend.routes.incidents import router as incidents_router
+from backend.routes.manufacturing import router as manufacturing_router
 from backend.services.vision_service import shutdown as vision_shutdown
 
 logging.basicConfig(
@@ -59,3 +61,5 @@ app.include_router(energy_router)
 app.include_router(safety_router)
 app.include_router(security_router)
 app.include_router(demo_router)
+app.include_router(incidents_router)
+app.include_router(manufacturing_router)

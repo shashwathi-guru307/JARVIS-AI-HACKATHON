@@ -1,6 +1,7 @@
 /**
  * Dashboard.jsx — Final Day 10 + Voice Access unified command center.
  */
+import { useState } from 'react';
 import TelemetryCard         from '../components/TelemetryCard';
 import TelemetryChart        from '../components/TelemetryChart';
 import AlertPanel            from '../components/AlertPanel';
@@ -24,6 +25,7 @@ import UnifiedAlertCenter    from '../components/UnifiedAlertCenter';
 import SystemTimeline        from '../components/SystemTimeline';
 import JarvisAIPanel         from '../components/JarvisAIPanel';
 import DemoController        from '../components/DemoController';
+import IncidentResolution    from '../components/IncidentResolution';
 import OfflineState          from '../components/OfflineState';
 import VoiceAccessPanel      from '../components/VoiceAccessPanel';
 import { useMaintenance }    from '../hooks/useMaintenance';
@@ -33,6 +35,7 @@ import { useSystemStatus }   from '../hooks/useSystemStatus';
 import { getStatusColors }   from '../utils/statusColors';
 
 export default function Dashboard({ connected, latest, history, alerts, streamStatus, security }) {
+  const [incident, setIncident] = useState(null);
   const t        = latest?.telemetry ?? {};
   const analysis = latest?.analysis  ?? {};
   const overallStatus = analysis.status ?? 'NORMAL';
@@ -51,7 +54,14 @@ export default function Dashboard({ connected, latest, history, alerts, streamSt
     <main className="p-4 sm:p-6 space-y-5 max-w-screen-xl mx-auto">
 
       {/* Demo controller */}
-      <DemoController token={security?.token} />
+      <DemoController token={security?.token} onIncident={setIncident} />
+      <section className="border border-slate-800 rounded p-4 grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div><p className="text-[9px] tracking-widest text-slate-600">PLANT</p><p className="text-xs text-slate-300 mt-1">Smart Manufacturing Plant</p></div>
+        <div><p className="text-[9px] tracking-widest text-slate-600">PRODUCTION LINE</p><p className="text-xs text-slate-300 mt-1">Assembly Line A</p></div>
+        <div><p className="text-[9px] tracking-widest text-slate-600">MACHINE</p><p className="text-xs text-slate-300 mt-1">M-101 · Rotating production machine</p></div>
+        <div><p className="text-[9px] tracking-widest text-slate-600">CRITICALITY</p><p className="text-xs text-amber-400 mt-1">HIGH</p></div>
+      </section>
+      <IncidentResolution token={security?.token} incident={incident} onChange={setIncident} />
 
       {/* Unified command center / offline state */}
       {backendDown ? (

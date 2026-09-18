@@ -14,6 +14,7 @@ from backend.services.safety_service import get_latest_safety
 from backend.services.security_service import get_security_status
 from backend.services.transaction_risk_service import get_transaction_summary
 from backend.services.telemetry_storage import get_latest_telemetry
+from backend.services.incident_service import list_incidents
 
 logger = logging.getLogger(__name__)
 
@@ -66,6 +67,7 @@ def get_system_snapshot() -> dict:
         "recommendation":  risk_data["recommendation"],
         "domain_risks":    risk_data["domain_risks"],
         "contributing_factors": risk_data["contributing"],
+        "active_incidents": [incident.model_dump(mode="json") for incident in list_incidents() if incident.status not in ("RESOLVED", "REJECTED")],
         "modules": {
             "telemetry":    "ONLINE" if tel else "OFFLINE",
             "maintenance":  "ONLINE" if pred else "WARMING_UP",

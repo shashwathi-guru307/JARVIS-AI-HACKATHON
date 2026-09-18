@@ -1,222 +1,126 @@
+# J.A.R.V.I.S.
 
-# J.A.R.V.I.S. AI Core — Day 1
+## AI-Powered Autonomous Incident Resolution for Smart Manufacturing
 
-**Just A Rather Very Intelligent System**
+J.A.R.V.I.S. is a prototype manufacturing operations command center for plant operators, maintenance teams, and operations managers. It turns multiple machine alerts into one explainable incident workflow instead of treating every alert as an unrelated failure.
 
-An AI-powered monitoring and decision-support backend built with FastAPI and OpenAI.
+## Problem and Target Industry
 
----
+Smart manufacturing plants contain connected production machines that emit temperature, vibration, RPM, and predictive-maintenance alerts. Several alerts can describe one underlying mechanical condition. J.A.R.V.I.S. correlates those signals, investigates the evidence, assesses production impact, prioritizes the incident, recommends remediation, obtains approval, verifies the safe simulation, and records the audit trail.
 
-## What is J.A.R.V.I.S.?
+The target industry is smart manufacturing, specifically production plants with connected industrial machinery. The demo context is Smart Manufacturing Plant, Assembly Line A, machine M-101. Primary users are plant operators, maintenance teams, and operations managers.
 
-J.A.R.V.I.S. accepts any event or sensor reading as plain text, sends it to an LLM
-with a structured system prompt, and returns a risk assessment as validated JSON —
-including severity, explanation, and recommended action.
+## Parameters
 
----
+The six visible machine-health parameters are:
 
-## Day 1 Objective
+| Parameter | Unit | Use |
+|---|---|---|
+| Temperature | °C | Thermal stress signal |
+| Vibration | Configurable level | Mechanical stress signal |
+| RPM | Revolutions per minute | Operating-speed deviation |
+| Pressure | Configurable operating pressure | Process context |
+| Humidity | % | Environmental context |
+| Battery/Power | % | Machine power context |
 
-Build the foundational backend:
-
-```
-User → FastAPI → AI Agent → Analysis → Structured JSON Response
-```
-
-No frontend, no database, no ML — pure backend foundation.
-
----
+The system also uses machine identity, criticality, alert severity, maintenance risk, production impact, approval status, execution status, verification status, and audit status. Thresholds are configurable prototype demo thresholds, not universal industrial standards. Example rules currently include temperature warning/critical values of 85/95, vibration warning/critical values of 0.60/0.90, and battery warning/critical values of 30/10.
 
 ## Architecture
 
-```
-User
-  ↓
-FastAPI
-  ↓
-Agent Route  (/agent/analyze)
-  ↓
-AI Service   (ai_service.py)
-  ↓
-LLM          (OpenAI)
-  ↓
-Structured JSON
-  ↓
-User
-```
-
----
-
-## Folder Structure
-
-```
-jarvis-hackathon/
-├── backend/
-│   ├── main.py              ← App init, route registration
-│   ├── routes/
-│   │   ├── health.py        ← GET /health
-│   │   └── agent.py         ← POST /agent/analyze
-│   ├── services/
-│   │   └── ai_service.py    ← All LLM communication
-│   ├── models/
-│   │   └── agent_models.py  ← Pydantic request/response models
-│   └── utils/
-│       └── config.py        ← Environment variable loading
-├── .env                     ← Your secrets (never commit this)
-├── .env.example             ← Template for other developers
-├── requirements.txt
-└── README.md
-```
-
----
-
-## Installation
-
-```bash
-# 1. Clone the repo
-git clone https://github.com/your-username/jarvis-hackathon.git
-cd jarvis-hackathon
-
-# 2. Create and activate a virtual environment
-python -m venv venv
-source venv/bin/activate        # macOS/Linux
-venv\Scripts\activate           # Windows
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Set up environment variables
-cp .env.example .env
-# Open .env and add your real OpenAI API key
-```
-
----
-
-## Environment Variables
-
-| Variable    | Description              | Example      |
-|-------------|--------------------------|--------------|
-| AI_API_KEY  | Your OpenAI API key      | sk-...       |
-| AI_MODEL    | Model to use             | gpt-4o       |
-
----
-
-## Start the Server
-
-```bash
-uvicorn backend.main:app --reload
-```
-
-For production, use `uvicorn backend.main:app --host 0.0.0.0 --port $PORT` without reload or multiple workers.
-
-The active predictive-maintenance artifact is `backend/vision/ml/models/predictive_maintenance.joblib`, as loaded by `backend/vision/ml/predictive_model.py`. The duplicate `ml/models/predictive_maintenance.joblib` is not referenced by the application and is excluded from the release.
-
-Visit: http://localhost:8000/docs
-
----
-
-## API Endpoints
-
-### GET /health
-Returns system status. Always available.
-
-```json
-{
-  "status": "online",
-  "system": "J.A.R.V.I.S.",
-  "version": "1.0.0"
-}
-```
-
-### POST /agent/analyze
-Analyze any event or sensor reading.
-
-**Request:**
-```json
-{
-  "message": "Machine temperature is 96°C and vibration is 0.92"
-}
-```
-
-**Response:**
-```json
-{
-  "status": "success",
-  "risk_level": "HIGH",
-  "summary": "Machine temperature and vibration are above safe thresholds.",
-  "reason": "A temperature of 96°C combined with vibration of 0.92 suggests abnormal mechanical stress.",
-  "recommended_action": "Shut down the machine and inspect cooling and mechanical components.",
-  "confidence": 0.93
-}
-```
-
----
-
-## Test Cases
-
-| Input | Expected risk_level |
-|-------|-------------------|
-| Machine temp 72°C, vibration 0.2 | NORMAL or LOW |
-| Machine temp 95°C, vibration 0.9 | HIGH or CRITICAL |
-| Heart rate 110 BPM, SpO2 93% | MEDIUM (no diagnosis) |
-| Transaction ₹95,000, normal < ₹2,000 | HIGH |
-
----
-
-## Future Features (Day 2+)
-
-- MQTT sensor integration
-- Real-time WebSocket streaming
-- PostgreSQL event logging
-- Computer vision anomaly detection
-- Multi-agent architecture
-- Frontend dashboard
-▶️ How to Run and Test
-Install and start:
-cd jarvis-hackathon
-python -m venv venv
-venv\Scripts\activate        # Windows
-pip install -r requirements.txt
-# Add your OpenAI API key to .env
-uvicorn backend.main:app --reload
-
-# Day 2 Features
-
-Day 2 extends the J.A.R.V.I.S. AI Core with a real-time telemetry monitoring and anomaly detection pipeline.
-
-## Day 2 Features
-
-- Synthetic telemetry generator
-- Pydantic telemetry validation
-- Rule-based anomaly detection
-- WebSocket streaming
-- Latest telemetry endpoint
-- Telemetry status endpoint
-- Multiple WebSocket clients
-- Error handling
-
-## Day 2 Architecture
-
 ```text
-┌──────────────────────┐
-│ Synthetic Telemetry  │
-│      Generator       │
-└──────────┬───────────┘
-           ↓
-┌──────────────────────┐
-│ Telemetry Service    │
-└──────────┬───────────┘
-           ↓
-┌──────────────────────┐
-│ Anomaly Detection    │
-│    Rule Engine       │
-└──────────┬───────────┘
-           ↓
-┌──────────────────────┐
-│ FastAPI WebSocket    │
-└──────────┬───────────┘
-           ↓
-┌──────────────────────┐
-│ WebSocket Clients    │
-└──────────────────────┘
+Machine Signals
+  -> Alert Normalization
+  -> Deterministic Correlation
+  -> One Machine Incident
+  -> AI Investigation / Root Cause Explanation
+  -> Production Impact
+  -> Priority
+  -> Remediation Plan
+  -> Human Approval
+  -> Safe Simulated Execution
+  -> Verification
+  -> Resolution and Audit
+```
 
+Deterministic services control telemetry validation, threshold detection, correlation, incident lifecycle, authorization, safe-action policy, verification state, and audit transitions. Groq is optional reasoning support for operator-facing explanations; core incident state does not depend on the LLM.
+
+## Demo Scenario
+
+Click **RUN MANUFACTURING INCIDENT** in the authenticated dashboard. The deterministic scenario primes simulated telemetry for M-101:
+
+- Temperature around 94 °C
+- Vibration around 0.85 g
+- RPM around 2300
+- Predictive maintenance degradation evidence
+
+These are configurable simulated manufacturing values. J.A.R.V.I.S. presents them as four related signals for one probable mechanical degradation / possible bearing-related incident on Assembly Line A. The workflow stops at human approval, then performs a safe simulated load reduction, primes a recovery state, verifies improvement, and records audit transitions. No real machine is controlled.
+
+## AI Responsibilities
+
+The AI/Groq layer can provide investigation narratives, evidence interpretation, contextual reasoning, probable-root-cause explanations, impact explanations, remediation recommendations, and conversational summaries. It does not control industrial equipment, execute shell commands, or bypass approval. Deterministic rules and policy controls remain authoritative.
+
+## Technology Stack
+
+Python, FastAPI, Pydantic, React, Vite, Tailwind CSS, WebSockets, Groq integration, OpenCV/vision services, and the existing predictive-maintenance model.
+
+## Local Development
+
+```powershell
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+Copy-Item .env.example .env
+uvicorn backend.main:app --reload
+```
+
+In another terminal:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+Open the Vite URL, authenticate as a configured demo operator/admin, and click **RUN MANUFACTURING INCIDENT**. API docs are available at `http://localhost:8000/docs`.
+
+Useful endpoints include `/health`, `/system/status`, `/manufacturing/plant`, `/incidents`, `/incidents/run-resolution`, and `/agent/analyze`.
+
+## Security and Safety
+
+JWT authentication, RBAC, rate limiting, and audit logging are preserved. Approval and execution require an authenticated operator or admin. Remediation is explicitly simulated: there is no shell execution, physical machine control, financial action, credential change, or emergency dispatch.
+
+## Deployment
+
+The existing Render architecture is preserved:
+
+- Backend root: repository root
+- Backend build: `pip install -r requirements.txt`
+- Backend start: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+- Frontend root: `frontend`
+- Frontend build: `npm install && npm run build`
+- Frontend publish directory: `dist`
+
+Configure `GROQ_API_KEY`, `GROQ_MODEL`, `JWT_SECRET`, `CORS_ORIGINS`, `DEMO_MODE`, demo passwords, `VITE_API_BASE_URL`, and `VITE_WS_BASE_URL` through deployment environment variables. Use HTTPS and WSS production URLs. No deployment was claimed or changed by this implementation.
+
+## Limitations
+
+- Incident and audit state are bounded in-memory prototype state.
+- Telemetry and remediation are simulated for the hackathon demo.
+- Thresholds are configurable examples, not plant-wide standards.
+- Verification demonstrates workflow state improvement and does not certify physical equipment safety.
+
+## Reviewer FAQ
+
+**Which industry are you targeting?** Smart manufacturing, specifically production plants with connected industrial machinery.
+
+**What parameters are you using?** Temperature, vibration, RPM, pressure, humidity, battery/power, plus machine metadata, alert severity, maintenance risk, and production impact.
+
+**What problem are you solving?** Multiple manufacturing alerts may represent one underlying machine failure. J.A.R.V.I.S. correlates those signals into one incident and manages investigation through resolution.
+
+**Where is the AI?** AI explains correlated evidence, probable cause, impact, and remediation. Deterministic rules and policy controls govern detection, authorization, and safe execution.
+
+**Is it controlling an industrial machine?** No. The current prototype performs safe simulated remediation only.
+
+**Why manufacturing?** Machine telemetry, maintenance evidence, and production impact naturally intersect, making incident correlation and resolution demonstrable.
+
+See [docs/MANUFACTURING_DEMO.md](docs/MANUFACTURING_DEMO.md) for the reviewer walkthrough.

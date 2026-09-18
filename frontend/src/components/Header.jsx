@@ -8,7 +8,7 @@ export default function Header({ connected, latest }) {
     <header className="border-b border-slate-800 px-6 py-4 flex items-center justify-between">
       <div>
         <h1 className="text-xl font-bold tracking-[0.3em] text-cyan-400">J.A.R.V.I.S.</h1>
-        <p className="text-xs tracking-widest text-slate-500 mt-0.5">REAL-TIME INTELLIGENCE SYSTEM</p>
+        <p className="text-xs tracking-widest text-slate-500 mt-0.5">SMART MANUFACTURING INCIDENT COMMAND CENTER</p>
       </div>
 
       <div className="flex items-center gap-6">

@@ -18,7 +18,7 @@ const SCENARIO_LABELS = {
   RECOVERY:           { label: "RECOVERY",            color: "emerald" },
 };
 
-export default function DemoController({ token }) {
+export default function DemoController({ token, onIncident }) {
   const [status,   setStatus]   = useState(null);
   const [loading,  setLoading]  = useState(false);
   const [message,  setMessage]  = useState(null);
@@ -59,15 +59,40 @@ export default function DemoController({ token }) {
     }
   };
 
+  const runIncident = async () => {
+    setLoading(true);
+    setMessage("Activating AI-01 incident workflow…");
+    try {
+      await fetch(`${BASE}/demo/scenario`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        body: JSON.stringify({ scenario: "AI01_MACHINE_INCIDENT" }),
+      });
+      const response = await fetch(`${BASE}/incidents/run-resolution`, { method: "POST" });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.detail ?? "Incident workflow failed.");
+      setStatus(s => ({ ...s, current_scenario: "AI01_MACHINE_INCIDENT" }));
+      onIncident(data);
+      setMessage("AI-01 incident detected. Awaiting approval.");
+    } catch (err) {
+      setMessage(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const current = status.current_scenario ?? "NORMAL";
 
   return (
     <div className="border border-slate-700/60 rounded p-4 space-y-3">
       <div className="flex items-center gap-2">
         <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-        <p className="text-[10px] tracking-widest text-amber-400/80">DEMO CONTROLLER</p>
+        <p className="text-[10px] tracking-widest text-amber-400/80">MANUFACTURING DEMO CONTROLLER</p>
       </div>
 
+      <button onClick={runIncident} disabled={loading} className="w-full text-[10px] tracking-widest px-3 py-2 rounded border border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 disabled:opacity-50">
+        RUN MANUFACTURING INCIDENT
+      </button>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
         {Object.entries(SCENARIO_LABELS).map(([key, meta]) => {
           const active = key === current;

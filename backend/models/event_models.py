@@ -20,7 +20,6 @@ class IntelligenceEvent(BaseModel):
     contributing_factors: list[str] = []
     recommended_action: str
     status: Literal["ACTIVE", "ACKNOWLEDGED", "RESOLVED"] = "ACTIVE"
-backend/services/risk_engine.py
 """
 Unified Risk Engine — combines domain risk signals into one system-level risk score.
 All calculations are deterministic and explainable.

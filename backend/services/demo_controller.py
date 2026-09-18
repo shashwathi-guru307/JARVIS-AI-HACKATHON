@@ -20,6 +20,17 @@ def set_scenario(scenario: str) -> str:
     if scenario not in VALID_SCENARIOS:
         raise ValueError(f"Unknown scenario '{scenario}'. Valid: {VALID_SCENARIOS}")
     _current_scenario = scenario
+    if scenario in ("AI01_MACHINE_INCIDENT", "RECOVERY"):
+        from datetime import datetime, timezone
+        from backend.models.telemetry_models import TelemetryData
+        from backend.services.predictive_service import run_prediction
+        from backend.services.telemetry_storage import save_telemetry
+
+        save_telemetry(TelemetryData(
+            device_id="MACHINE_01", timestamp=datetime.now(timezone.utc),
+            **SCENARIO_TELEMETRY[scenario],
+        ))
+        run_prediction()
     logger.info("🎬  Demo scenario → %s", scenario)
     return _current_scenario
 
@@ -37,6 +48,10 @@ SCENARIO_TELEMETRY: dict[str, dict] = {
         "battery": 88.0, "humidity": 45.0, "pressure": 1013.0,
     },
     "MACHINE_DEGRADATION": {
+        "temperature": 94.0, "vibration": 0.85, "rpm": 2300.0,
+        "battery": 71.0, "humidity": 52.0, "pressure": 1010.0,
+    },
+    "AI01_MACHINE_INCIDENT": {
         "temperature": 94.0, "vibration": 0.85, "rpm": 2300.0,
         "battery": 71.0, "humidity": 52.0, "pressure": 1010.0,
     },
@@ -69,6 +84,7 @@ SCENARIO_TELEMETRY: dict[str, dict] = {
 SCENARIO_FLAGS: dict[str, dict] = {
     "NORMAL":             {"security_incident": False, "operator_proximity": False, "energy_peak": False},
     "MACHINE_DEGRADATION":{"security_incident": False, "operator_proximity": False, "energy_peak": False},
+    "AI01_MACHINE_INCIDENT":{"security_incident": False, "operator_proximity": False, "energy_peak": False},
     "ENERGY_PEAK":        {"security_incident": False, "operator_proximity": False, "energy_peak": True},
     "SAFETY_WARNING":     {"security_incident": False, "operator_proximity": True,  "energy_peak": False},
     "SECURITY_INCIDENT":  {"security_incident": True,  "operator_proximity": False, "energy_peak": False},
