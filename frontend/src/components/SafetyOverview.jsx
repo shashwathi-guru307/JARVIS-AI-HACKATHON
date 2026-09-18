@@ -18,7 +18,7 @@ function scoreStatus(score) {
   return "CRITICAL";
 }
 
-export default function SafetyOverview({ latest }) {
+export default function SafetyOverview({ latest, connected, events = [] }) {
   const [emergency, setEmergency] = useState(false);
 
   async function handleSOS() {
@@ -31,13 +31,14 @@ export default function SafetyOverview({ latest }) {
     setEmergency(false);
   }
 
-  if (!latest) {
+  if (!connected && !latest) {
     return (
-      <div className="border border-slate-800 rounded p-4 text-slate-600 text-xs tracking-wider">
-        HUMAN SAFETY MONITOR<br /><br />Awaiting safety data…
+      <div className="border border-red-500/30 rounded p-4 text-red-400 text-xs tracking-wider">
+        HUMAN SAFETY MONITOR<br /><br />SERVICE OFFLINE<br /><span className="text-slate-500">Safety data unavailable. Monitoring will resume when the backend reconnects.</span>
       </div>
     );
   }
+  if (!latest) return <div className="border border-slate-800 rounded p-4 text-slate-500 text-xs tracking-wider">HUMAN SAFETY MONITOR<br /><br />LOADING SAFETY DATA…</div>;
 
   const overallColors = getStatusColors(
     latest.overall_risk === "NORMAL" || latest.overall_risk === "LOW" ? "NORMAL" :
@@ -108,6 +109,8 @@ export default function SafetyOverview({ latest }) {
           🚨 EMERGENCY ACTIVE — SIMULATED DEMO ONLY
         </div>
       )}
+
+      <div className="mc-safety-events"><p className="text-[9px] tracking-widest text-slate-500">RECENT SAFETY EVENTS</p>{events.slice(0, 5).map((event) => <div key={event.id ?? event.event_id} className="mc-safety-event"><span>{event.time ?? new Date(event.timestamp).toLocaleTimeString()}</span><b>{event.label ?? event.event_type?.replaceAll("_", " ")}</b></div>)}</div>
 
       {/* Privacy note */}
       <p className="text-[9px] text-slate-700 leading-relaxed">

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTelemetry }       from './hooks/useTelemetry';
 import { useSecurity }        from './hooks/useSecurity';
-import Header                 from './components/Header';
 import Dashboard              from './pages/Dashboard';
 import ConnectionStatus       from './components/ConnectionStatus';
 import LoginScreen            from './components/LoginScreen';
@@ -36,7 +35,6 @@ export default function App() {
   return (
     <div className="min-h-screen">
       <ConnectionStatus connected={connected} hasData={!!latest} />
-      <Header connected={connected} latest={latest} />
       <Dashboard
         connected={connected}
         latest={latest}

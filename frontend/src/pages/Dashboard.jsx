@@ -42,6 +42,10 @@ import { getStatusColors }   from '../utils/statusColors';
 
 export default function Dashboard({ connected, latest, history, alerts, streamStatus, security }) {
   const [incident, setIncident] = useState(null);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [readNotifications, setReadNotifications] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settings, setSettings] = useState({ animation: true, targetCursor: true, compact: false, safetyVisible: true, safetyNotifications: true, voiceEnabled: true });
   const [activeSection, setActiveSection] = useState('Command Center');
   const [selectedParameter, setSelectedParameter] = useState(null);
   const t        = latest?.telemetry ?? {};
@@ -51,12 +55,21 @@ export default function Dashboard({ connected, latest, history, alerts, streamSt
 
   const { prediction, history: maintHistory, twin } = useMaintenance();
   const { latestEnergy, optimization, energyHistory, energyAlerts } = useEnergy();
-  const { latestSafety, latestSafetyEvent, timeline } = useSafety();
+  const { latestSafety, latestSafetyEvent, timeline, safetyConnected } = useSafety();
   const { snapshot, health } = useSystemStatus(security?.token);
 
   const txRisks    = security?.txRisks  ?? [];
   const secHistory = security?.history  ?? [];
   const backendDown = !snapshot && !connected;
+
+  const notifications = [
+    ...(incident ? [{ id: `incident-${incident.incident_id}`, title: "Production incident created", source: incident.incident_id, severity: incident.severity, time: incident.status }] : []),
+    ...(alerts ?? []).slice(0, 3).map((alert) => ({ id: `telemetry-${alert.id}`, title: `${alert.status} machine alert`, source: "M-101 · TELEMETRY", severity: alert.status, time: alert.time })),
+    ...(settings.safetyNotifications ? timeline.filter((item) => item.risk !== "NORMAL").slice(0, 2).map((item) => ({ id: `safety-${item.id}`, title: item.label, source: "M-101 · SAFETY", severity: item.risk, time: item.time })) : []),
+  ].slice(0, 8);
+  const updateSetting = (key, value) => setSettings((current) => ({ ...current, [key]: value }));
+  useEffect(() => { document.documentElement.dataset.motion = settings.animation ? "on" : "off"; document.documentElement.dataset.density = settings.compact ? "compact" : "comfortable"; }, [settings.animation, settings.compact]);
+  useEffect(() => { const close = (event) => event.key === "Escape" && (setNotificationsOpen(false), setSettingsOpen(false)); window.addEventListener("keydown", close); return () => window.removeEventListener("keydown", close); }, []);
 
   const destinations = {
     TEMPERATURE: { section: 'Machine Health', target: 'machine-health', chart: 'temperature', label: 'Temperature', subtitle: 'M-101 Machine Health' },
@@ -90,7 +103,7 @@ export default function Dashboard({ connected, latest, history, alerts, streamSt
     <div className="mc-shell">
       <ManufacturingSidebar activeSection={activeSection} onNavigate={navigateTo} />
       <div className="mc-workspace">
-        <ManufacturingTopBar connected={connected} security={security} />
+        <ManufacturingTopBar security={security} notifications={{ open: notificationsOpen, items: notifications, close: () => setNotificationsOpen(false), openItem: () => setNotificationsOpen(false) }} unreadCount={readNotifications ? 0 : notifications.length} onNotificationToggle={() => { setNotificationsOpen((open) => !open); setReadNotifications(true); }} settings={{ open: settingsOpen, values: settings, toggle: () => setSettingsOpen((open) => !open), close: () => setSettingsOpen(false) }} onSettingChange={updateSetting} />
         <main className="mc-main" id="command-center">
           <section className="mc-context-bar">
             <div><span className="mc-kicker">MANUFACTURING PLANT</span><strong>Smart Manufacturing Plant</strong></div>
@@ -168,10 +181,10 @@ export default function Dashboard({ connected, latest, history, alerts, streamSt
       </section>
 
       {/* Day 7 — Safety */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <SafetyOverview latest={latestSafety} />
+      {settings.safetyVisible && <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <SafetyOverview latest={latestSafety} connected={safetyConnected} events={timeline} />
         <SafetyAlerts   latest={latestSafety} latestEvent={latestSafetyEvent} timeline={timeline} />
-      </section>
+      </section>}
 
       {/* Day 8 — Security */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -187,7 +200,7 @@ export default function Dashboard({ connected, latest, history, alerts, streamSt
 
       {/* Voice Access + AI Panels (side by side on wide screens) */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <VoiceAccessPanel token={security?.token} />
+        <VoiceAccessPanel token={security?.token} voiceEnabled={settings.voiceEnabled} />
         <JarvisAIPanel    token={security?.token} snapshot={snapshot} />
       </section>
 

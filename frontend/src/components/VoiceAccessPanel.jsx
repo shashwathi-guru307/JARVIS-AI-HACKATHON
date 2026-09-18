@@ -27,7 +27,7 @@ const QUICK_COMMANDS = [
   "What maintenance is recommended?",
 ];
 
-export default function VoiceAccessPanel({ token }) {
+export default function VoiceAccessPanel({ token, voiceEnabled = true }) {
   const [textInput, setTextInput] = useState("");
   const [isVoiceOn, setIsVoiceOn] = useState(false);
   const bottomRef = useRef(null);
@@ -48,7 +48,11 @@ export default function VoiceAccessPanel({ token }) {
 
   const voice = useVoiceAccess({
     onTranscript: handleReply,
+    enabled: voiceEnabled,
   });
+  useEffect(() => {
+    if (!voiceEnabled && voice.isOn) voice.turnOff();
+  }, [voiceEnabled, voice]);
   useEffect(() => {
     voiceRef.current = voice;
   }, [voice]);
