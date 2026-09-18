@@ -26,6 +26,12 @@ import SystemTimeline        from '../components/SystemTimeline';
 import JarvisAIPanel         from '../components/JarvisAIPanel';
 import DemoController        from '../components/DemoController';
 import IncidentResolution    from '../components/IncidentResolution';
+import ManufacturingSidebar  from '../components/ManufacturingSidebar';
+import ManufacturingTopBar   from '../components/ManufacturingTopBar';
+import MachineHealthPanel    from '../components/MachineHealthPanel';
+import LiveIncidentFeed      from '../components/LiveIncidentFeed';
+import JarvisCorePanel       from '../components/JarvisCorePanel';
+import PlantOperationsPanel  from '../components/PlantOperationsPanel';
 import OfflineState          from '../components/OfflineState';
 import VoiceAccessPanel      from '../components/VoiceAccessPanel';
 import { useMaintenance }    from '../hooks/useMaintenance';
@@ -51,17 +57,28 @@ export default function Dashboard({ connected, latest, history, alerts, streamSt
   const backendDown = !snapshot && !connected;
 
   return (
-    <main className="p-4 sm:p-6 space-y-5 max-w-screen-xl mx-auto">
+    <div className="mc-shell">
+      <ManufacturingSidebar />
+      <div className="mc-workspace">
+        <ManufacturingTopBar connected={connected} security={security} />
+        <main className="mc-main">
+          <section className="mc-context-bar">
+            <div><span className="mc-kicker">MANUFACTURING PLANT</span><strong>Smart Manufacturing Plant</strong></div>
+            <span className="mc-context-divider" />
+            <div><span className="mc-kicker">PRODUCTION LINE</span><strong>Assembly Line A</strong></div>
+            <span className="mc-context-divider" />
+            <div><span className="mc-kicker">PRIMARY MACHINE</span><strong>M-101 <em>·</em> High criticality</strong></div>
+            <div className="mc-context-purpose">MULTIPLE SIGNALS <b>→</b> ONE INCIDENT</div>
+          </section>
 
       {/* Demo controller */}
       <DemoController token={security?.token} onIncident={setIncident} />
-      <section className="border border-slate-800 rounded p-4 grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div><p className="text-[9px] tracking-widest text-slate-600">PLANT</p><p className="text-xs text-slate-300 mt-1">Smart Manufacturing Plant</p></div>
-        <div><p className="text-[9px] tracking-widest text-slate-600">PRODUCTION LINE</p><p className="text-xs text-slate-300 mt-1">Assembly Line A</p></div>
-        <div><p className="text-[9px] tracking-widest text-slate-600">MACHINE</p><p className="text-xs text-slate-300 mt-1">M-101 · Rotating production machine</p></div>
-        <div><p className="text-[9px] tracking-widest text-slate-600">CRITICALITY</p><p className="text-xs text-amber-400 mt-1">HIGH</p></div>
+      <section className="mc-command-grid">
+        <div className="mc-command-left"><JarvisCorePanel incident={incident} /><MachineHealthPanel telemetry={t} incident={incident} /></div>
+        <LiveIncidentFeed incident={incident} alerts={alerts} />
       </section>
       <IncidentResolution token={security?.token} incident={incident} onChange={setIncident} />
+      <PlantOperationsPanel incident={incident} snapshot={snapshot} />
 
       {/* Unified command center / offline state */}
       {backendDown ? (
@@ -168,6 +185,8 @@ export default function Dashboard({ connected, latest, history, alerts, streamSt
         <VisionPanel />
       </section>
 
-    </main>
+        </main>
+      </div>
+    </div>
   );
 }

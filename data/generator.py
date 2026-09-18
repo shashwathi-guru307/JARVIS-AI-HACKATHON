@@ -27,6 +27,10 @@ def generate_telemetry(device_id="MACHINE_01"):
     Generate one synthetic telemetry reading.
     """
 
+    from backend.services.demo_controller import get_scenario, get_telemetry_overrides
+
+    scenario = get_scenario()
+
     # Small natural variation around baseline
     temperature = BASELINE["temperature"] + random.uniform(-3, 3)
     humidity = BASELINE["humidity"] + random.uniform(-4, 4)
@@ -48,6 +52,15 @@ def generate_telemetry(device_id="MACHINE_01"):
             "Anomaly generated for %s",
             device_id
         )
+
+    if scenario in ("AI01_MACHINE_INCIDENT", "RECOVERY"):
+        demo = get_telemetry_overrides()
+        temperature = demo["temperature"]
+        humidity = demo["humidity"]
+        pressure = demo["pressure"] / 10
+        vibration = demo["vibration"]
+        rpm = demo["rpm"]
+        battery = demo["battery"]
 
     return {
         "device_id": device_id,
