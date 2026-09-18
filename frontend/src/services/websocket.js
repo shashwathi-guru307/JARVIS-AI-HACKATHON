@@ -24,7 +24,7 @@ export function createTelemetrySocket({ onMessage, onOpen, onClose, onError }) {
         const data = JSON.parse(event.data);
         onMessage?.(data);
       } catch {
-        console.error('JARVIS WS: invalid JSON', event.data);
+        console.error('X.A.Z.E.L. WS: invalid JSON', event.data);
       }
     };
 

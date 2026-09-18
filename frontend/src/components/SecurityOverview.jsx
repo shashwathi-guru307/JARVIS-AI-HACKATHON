@@ -14,7 +14,7 @@ export default function SecurityOverview({ status, username, role, onLogout }) {
   if (!status) {
     return (
       <div className="border border-slate-800 rounded p-4 text-slate-600 text-xs tracking-wider">
-        J.A.R.V.I.S. SECURITY<br /><br />Awaiting security data…
+        X.A.Z.E.L. SECURITY<br /><br />Awaiting security data…
       </div>
     );
   }
@@ -30,7 +30,7 @@ export default function SecurityOverview({ status, username, role, onLogout }) {
   return (
     <div className="border border-slate-800 rounded p-4 space-y-3">
       <div className="flex items-center justify-between">
-        <p className="text-[10px] tracking-widest text-slate-500">J.A.R.V.I.S. SECURITY</p>
+        <p className="text-[10px] tracking-widest text-slate-500">X.A.Z.E.L. SECURITY</p>
         <span className={`text-[10px] tracking-widest font-bold ${statusColors.text}`}>
           ● {status.security_status}
         </span>

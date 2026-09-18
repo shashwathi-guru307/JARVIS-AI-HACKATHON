@@ -19,7 +19,7 @@ export default function ManufacturingSidebar({ activeSection = "Command Center",
       <div className="mc-brand">
         <div className="mc-emblem"><span>J</span></div>
         <div>
-          <p className="mc-brand-name">J.A.R.V.I.S.</p>
+          <p className="mc-brand-name">X.A.Z.E.L.</p>
           <p className="mc-brand-sub">SMART MANUFACTURING</p>
         </div>
       </div>

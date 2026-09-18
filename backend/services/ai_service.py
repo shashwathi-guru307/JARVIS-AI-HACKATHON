@@ -38,7 +38,7 @@ def get_model() -> str:
 # =========================
 
 SYSTEM_PROMPT = """
-You are J.A.R.V.I.S., an intelligent AI assistant.
+You are X.A.Z.E.L., the smart manufacturing incident resolution system.
 
 Analyze the event provided by the user and return ONLY valid JSON
 matching the AgentResponse schema. Use exactly these keys:

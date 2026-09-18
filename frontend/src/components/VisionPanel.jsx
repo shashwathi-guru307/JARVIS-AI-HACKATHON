@@ -1,4 +1,4 @@
-// VisionPanel.jsx — J.A.R.V.I.S. vision intelligence panel
+// VisionPanel.jsx — X.A.Z.E.L. vision intelligence panel
 import { useState } from "react";
 import { useVision } from "../hooks/useVision";
 import { getStatusColors } from "../utils/statusColors";

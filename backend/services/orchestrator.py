@@ -1,5 +1,5 @@
 """
-J.A.R.V.I.S. Orchestrator — central coordinator that collects context
+ X.A.Z.E.L. Orchestrator — central coordinator that collects context
 from all intelligence domains, runs correlation and risk calculation,
 and produces a unified system state snapshot.
 """

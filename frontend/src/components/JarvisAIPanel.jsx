@@ -1,5 +1,5 @@
 /**
- * JarvisAIPanel — the "Ask J.A.R.V.I.S." panel.
+ * JarvisAIPanel — the "Ask X.A.Z.E.L." panel.
  * Sends a natural-language question (or a pre-built system summary request)
  * to POST /agent/analyze and displays the narrative_answer.
  */
@@ -82,7 +82,7 @@ export default function JarvisAIPanel({ token, snapshot }) {
 
   return (
     <div className="border border-slate-800 rounded p-4 space-y-3">
-      <p className="text-[10px] tracking-widest text-slate-500">J.A.R.V.I.S. AI EXPLANATION</p>
+      <p className="text-[10px] tracking-widest text-slate-500">X.A.Z.E.L. AI EXPLANATION</p>
 
       {/* Quick question chips */}
       <div className="flex flex-wrap gap-1">
@@ -106,7 +106,7 @@ export default function JarvisAIPanel({ token, snapshot }) {
           className="flex-1 bg-slate-900 border border-slate-700 rounded px-3 py-1.5
                      text-xs text-slate-300 placeholder:text-slate-600
                      focus:outline-none focus:border-cyan-500/60"
-          placeholder="Ask J.A.R.V.I.S. anything about the system…"
+          placeholder="Ask X.A.Z.E.L. anything about the system…"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && ask()}
@@ -126,7 +126,7 @@ export default function JarvisAIPanel({ token, snapshot }) {
       {/* Answer / Error / Scores */}
       {loading && (
         <p className="text-cyan-400/70 text-xs tracking-wider animate-pulse">
-          J.A.R.V.I.S. is analyzing…
+          X.A.Z.E.L. is analyzing…
         </p>
       )}
       {error && (
@@ -136,7 +136,7 @@ export default function JarvisAIPanel({ token, snapshot }) {
       )}
       {answer && !loading && (
         <div className="border border-cyan-500/20 bg-cyan-500/5 rounded p-4 space-y-2">
-          <p className="text-[9px] tracking-widest text-cyan-500/60">J.A.R.V.I.S. RESPONSE</p>
+          <p className="text-[9px] tracking-widest text-cyan-500/60">X.A.Z.E.L. RESPONSE</p>
           <p className="text-sm text-slate-300 leading-relaxed">{answer}</p>
 
           {/* Key scores from the response */}

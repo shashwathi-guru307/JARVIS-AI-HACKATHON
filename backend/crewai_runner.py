@@ -1,7 +1,7 @@
 """
-J.A.R.V.I.S. AI Flow Runner
+X.A.Z.E.L. AI Flow Runner
 
-Local implementation of the J.A.R.V.I.S. command flow.
+Local implementation of the X.A.Z.E.L. command flow.
 
 CrewAI is not required for the local application.
 The runner uses the existing Groq-powered AI service and
@@ -25,13 +25,13 @@ async def run_flow(
     conversation_history: list[dict] | None = None,
 ) -> dict:
     """
-    Run the J.A.R.V.I.S. AI flow without requiring CrewAI.
+    Run the X.A.Z.E.L. AI flow without requiring CrewAI.
 
     mode="analyze":
         Returns structured AI analysis.
 
     mode="chat":
-        Returns a conversational J.A.R.V.I.S. response using
+        Returns a conversational X.A.Z.E.L. response using
         live system context.
     """
 
@@ -101,8 +101,7 @@ async def run_flow(
             if mode == "chat":
 
                 prompt = f"""
-You are J.A.R.V.I.S., the intelligent command assistant
-for an industrial monitoring system.
+You are X.A.Z.E.L., the smart manufacturing incident resolution system.
 
 Answer the user's question naturally and clearly.
 
@@ -137,7 +136,7 @@ Instructions:
                         "error": ai_result.error,
                     }
 
-                # Build a natural J.A.R.V.I.S. response
+                # Build a natural X.A.Z.E.L. response
                 response_parts = []
 
                 if ai_result.summary:
@@ -173,7 +172,7 @@ Instructions:
             else:
 
                 prompt = f"""
-Analyze the following J.A.R.V.I.S. command using the
+Analyze the following X.A.Z.E.L. command using the
 live system context.
 
 LIVE SYSTEM CONTEXT:
@@ -224,7 +223,7 @@ Use the live context when answering.
                 }
 
         except Exception as e:
-            logger.exception("J.A.R.V.I.S. flow error")
+            logger.exception("X.A.Z.E.L. flow error")
 
             return {
                 "status": "error",

@@ -12,7 +12,7 @@ router = APIRouter()
 def health_check():
     return {
         "status": "online",
-        "system": "J.A.R.V.I.S.",
+        "system": "X.A.Z.E.L.",
         "version": "10.0.0",
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "demo_mode": DEMO_MODE,
@@ -21,7 +21,7 @@ def health_check():
 
 @router.get("/system/status", tags=["System"])
 def system_status():
-    """Unified J.A.R.V.I.S. system status across all intelligence domains."""
+    """Unified X.A.Z.E.L. system status across all intelligence domains."""
     return get_system_snapshot()
 
 

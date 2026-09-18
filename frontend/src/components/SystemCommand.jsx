@@ -27,7 +27,7 @@ export default function SystemCommand({ snapshot }) {
   if (!snapshot) {
     return (
       <div className="border border-slate-800 rounded p-4 col-span-2 text-slate-600 text-xs tracking-wider">
-        J.A.R.V.I.S. COMMAND CENTER<br /><br />Initializing unified intelligence…
+        X.A.Z.E.L. COMMAND CENTER<br /><br />Initializing unified intelligence…
       </div>
     );
   }
@@ -44,7 +44,7 @@ export default function SystemCommand({ snapshot }) {
       {/* Header row */}
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-[10px] tracking-widest text-slate-500">J.A.R.V.I.S. COMMAND CENTER</p>
+          <p className="text-[10px] tracking-widest text-slate-500">X.A.Z.E.L. COMMAND CENTER</p>
           <p className={`text-2xl font-bold tracking-widest mt-1 ${statusColor}`}>
             {snapshot.system_status}
           </p>

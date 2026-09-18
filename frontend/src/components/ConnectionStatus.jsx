@@ -4,7 +4,7 @@ export default function ConnectionStatus({ connected, hasData }) {
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#020c14]">
-      <div className="text-cyan-400 text-4xl tracking-widest font-bold mb-4">J.A.R.V.I.S.</div>
+      <div className="text-cyan-400 text-4xl tracking-widest font-bold mb-4">X.A.Z.E.L.</div>
       {!connected ? (
         <>
           <p className="text-red-400 text-sm tracking-widest mb-2">● CONNECTION LOST</p>
@@ -12,7 +12,7 @@ export default function ConnectionStatus({ connected, hasData }) {
         </>
       ) : (
         <>
-          <p className="text-cyan-400 text-sm tracking-widest mb-2">CONNECTING TO J.A.R.V.I.S....</p>
+          <p className="text-cyan-400 text-sm tracking-widest mb-2">CONNECTING TO X.A.Z.E.L....</p>
           <p className="text-slate-500 text-xs tracking-wider">Initializing telemetry stream...</p>
         </>
       )}

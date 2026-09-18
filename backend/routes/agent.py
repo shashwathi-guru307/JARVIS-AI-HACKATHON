@@ -29,7 +29,7 @@ async def analyze(
    
 ):
     """
-    J.A.R.V.I.S. unified analysis endpoint.
+    X.A.Z.E.L. unified analysis endpoint.
     mode=analyze  → nine-dimension structured JSON (Days 1–10)
     mode=chat     → plain-language conversational response for voice/text
     """
@@ -42,7 +42,7 @@ async def analyze(
             "status": "success",
             "risk_level": active.severity if active else "LOW",
             "summary": "Approval requires the authenticated incident approval control.",
-            "reason": "J.A.R.V.I.S. will not approve or execute remediation from an arbitrary language response.",
+            "reason": "X.A.Z.E.L. will not approve or execute remediation from an arbitrary language response.",
             "recommended_action": "Use the authenticated APPROVE REMEDIATION control on the incident panel.",
             "confidence": 1.0,
             "narrative_answer": "Remediation approval must use the authenticated incident approval flow. I did not approve or execute an action.",

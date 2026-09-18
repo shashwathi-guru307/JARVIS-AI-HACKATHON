@@ -1,8 +1,8 @@
-# Smart Manufacturing Demo
+# X.A.Z.E.L. Smart Manufacturing Demo
 
 ## Industry and Users
 
-J.A.R.V.I.S. targets smart manufacturing plants with connected production machinery. The primary users are plant operators, maintenance teams, and operations managers.
+X.A.Z.E.L. targets smart manufacturing plants with connected production machinery. The primary users are plant operators, maintenance teams, and operations managers.
 
 ## Parameters
 
@@ -14,7 +14,7 @@ The demo represents M-101, an industrial rotating production machine on Assembly
 
 ## Correlation
 
-The project does not treat each machine alert independently. It correlates multiple operational signals that occur in the same machine and operational context, allowing J.A.R.V.I.S. to reason about the underlying incident rather than merely displaying alerts.
+The project does not treat each machine alert independently. It correlates multiple operational signals that occur in the same machine and operational context, allowing X.A.Z.E.L. to reason about the underlying incident rather than merely displaying alerts.
 
 The deterministic correlation layer normalizes elevated temperature, elevated vibration, abnormal RPM, and predictive degradation into one incident with multiple source event IDs. Existing broad correlation rules remain available to the system snapshot.
 
@@ -55,7 +55,7 @@ The bounded in-memory audit log records detection, correlation, investigation, R
 
 **Where is the AI?** The AI reasoning layer investigates correlated evidence, explains probable root cause, assesses the situation, and recommends remediation. Deterministic rules and policy controls govern detection, authorization, and safe execution.
 
-**What happens after detection?** J.A.R.V.I.S. correlates alerts, investigates evidence, identifies a probable cause, assesses production impact, prioritizes, recommends remediation, obtains approval, performs a safe simulated action, verifies the result, and records the audit trail.
+**What happens after detection?** X.A.Z.E.L. correlates alerts, investigates evidence, identifies a probable cause, assesses production impact, prioritizes, recommends remediation, obtains approval, performs a safe simulated action, verifies the result, and records the audit trail.
 
 **Is it actually controlling an industrial machine?** No. The prototype uses safe simulated remediation and intentionally separates AI reasoning from physical control.
 

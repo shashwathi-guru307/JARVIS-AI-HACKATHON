@@ -12,7 +12,7 @@ export default function OfflineState({ modules }) {
     <div className="border border-slate-800 rounded p-6 space-y-4 col-span-2">
       <div className="flex items-center gap-3">
         <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-        <p className="text-sm tracking-widest text-red-400">J.A.R.V.I.S. — CONNECTING…</p>
+        <p className="text-sm tracking-widest text-red-400">X.A.Z.E.L. — CONNECTING…</p>
       </div>
       <p className="text-xs text-slate-500">
         One or more services are unavailable. Deterministic intelligence continues where possible.

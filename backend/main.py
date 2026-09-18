@@ -31,8 +31,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="J.A.R.V.I.S. AI Core",
-    description="Just A Rather Very Intelligent System — Voice + Agentic Intelligence",
+    title="X.A.Z.E.L. — Smart Manufacturing Incident Resolution API",
+    description="X.A.Z.E.L. AI-powered autonomous incident resolution for smart manufacturing",
     version="10.1.0",
     lifespan=lifespan,
 )

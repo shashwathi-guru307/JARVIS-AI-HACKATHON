@@ -12,7 +12,7 @@ class AnalyzeRequest(BaseModel):
 
 
 class AgentResponse(BaseModel):
-    """Structured JSON response returned by J.A.R.V.I.S."""
+    """Structured JSON response returned by X.A.Z.E.L."""
     status: Literal["success", "error"]
     risk_level: Literal["NORMAL", "LOW", "MEDIUM", "HIGH", "CRITICAL"] | None = None
     summary: str | None = None

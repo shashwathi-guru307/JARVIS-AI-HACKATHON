@@ -1,5 +1,5 @@
 /**
- * useJarvisChat — shared agent pipeline for voice AND text input.
+ * useJarvisChat — shared X.A.Z.E.L. agent pipeline for voice AND text input.
  *
  * Both voice transcripts and typed commands flow through this hook.
  * It fetches live system context before each call so the conversational
@@ -67,7 +67,7 @@ export function useJarvisChat(token) {
       const data = await res.json();
 
       if (data.status === "error") {
-        const errMsg = data.error ?? "J.A.R.V.I.S. encountered an error.";
+        const errMsg = data.error ?? "X.A.Z.E.L. encountered an error.";
         setError(errMsg);
         setMessages(prev => [...prev, { role: "assistant", content: errMsg }]);
         setLoading(false);
@@ -93,7 +93,7 @@ export function useJarvisChat(token) {
       return { reply, raw: data };
 
     } catch {
-      const errMsg = "J.A.R.V.I.S. backend is unavailable. Deterministic analysis continues.";
+      const errMsg = "X.A.Z.E.L. backend is unavailable. Deterministic analysis continues.";
       setError(errMsg);
       setMessages(prev => [...prev, { role: "assistant", content: errMsg }]);
       setLoading(false);

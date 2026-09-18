@@ -1,5 +1,5 @@
 /**
- * VoiceAccessPanel — J.A.R.V.I.S. voice access + conversational text panel.
+ * VoiceAccessPanel — X.A.Z.E.L. voice access + conversational text panel.
  *
  * Voice and text share the same useJarvisChat pipeline.
  * Voice state machine: OFF → IDLE → LISTENING → PROCESSING → EXECUTING → SPEAKING → LISTENING → …
@@ -92,7 +92,7 @@ export default function VoiceAccessPanel({ token }) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className={`text-base ${stateMeta.color} ${stateMeta.pulse ? "animate-pulse" : ""}`}>🎙</span>
-          <p className="text-[10px] tracking-widest text-slate-500">J.A.R.V.I.S. VOICE ACCESS</p>
+          <p className="text-[10px] tracking-widest text-slate-500">X.A.Z.E.L. VOICE ACCESS</p>
         </div>
         <span className={`text-[10px] tracking-widest font-bold ${stateMeta.color} ${stateMeta.pulse ? "animate-pulse" : ""}`}>
           {stateMeta.label}
@@ -165,7 +165,7 @@ export default function VoiceAccessPanel({ token }) {
               <p className={`text-[9px] tracking-widest mb-1 ${
                 m.role === "user" ? "text-slate-500" : "text-cyan-500/60"
               }`}>
-                {m.role === "user" ? "YOU" : "J.A.R.V.I.S."}
+                {m.role === "user" ? "YOU" : "X.A.Z.E.L."}
               </p>
               <p className={`text-xs leading-relaxed ${
                 m.role === "user" ? "text-slate-400" : "text-slate-300"
@@ -176,7 +176,7 @@ export default function VoiceAccessPanel({ token }) {
           ))}
           {loading && (
             <div className="border border-slate-700 rounded px-3 py-2">
-              <p className="text-[9px] text-slate-500 tracking-widest mb-1">J.A.R.V.I.S.</p>
+              <p className="text-[9px] text-slate-500 tracking-widest mb-1">X.A.Z.E.L.</p>
               <p className="text-[10px] text-cyan-400/70 animate-pulse">Processing…</p>
             </div>
           )}

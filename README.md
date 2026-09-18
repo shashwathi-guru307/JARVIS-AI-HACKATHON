@@ -1,8 +1,10 @@
-# J.A.R.V.I.S.
+# X.A.Z.E.L.
 
-## AI-Powered Autonomous Incident Resolution for Smart Manufacturing
+## AI-Powered Autonomous Incident Resolution
 
-J.A.R.V.I.S. is a prototype manufacturing operations command center for plant operators, maintenance teams, and operations managers. It turns multiple machine alerts into one explainable incident workflow instead of treating every alert as an unrelated failure.
+### for Smart Manufacturing
+
+X.A.Z.E.L. is a prototype manufacturing operations command center for plant operators, maintenance teams, and operations managers. It turns multiple machine alerts into one explainable incident workflow instead of treating every alert as an unrelated failure.
 
 ## Problem and Target Industry
 

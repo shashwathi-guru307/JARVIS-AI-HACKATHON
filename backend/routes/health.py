@@ -11,6 +11,6 @@ def health_check() -> dict:
     """
     return {
         "status": "online",
-        "system": "J.A.R.V.I.S.",
+        "system": "X.A.Z.E.L.",
         "version": "1.0.0"
     }

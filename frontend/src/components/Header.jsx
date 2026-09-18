@@ -7,7 +7,7 @@ export default function Header({ connected, latest }) {
   return (
     <header className="border-b border-slate-800 px-6 py-4 flex items-center justify-between">
       <div>
-        <h1 className="text-xl font-bold tracking-[0.3em] text-cyan-400">J.A.R.V.I.S.</h1>
+        <h1 className="text-xl font-bold tracking-[0.3em] text-cyan-400">X.A.Z.E.L.</h1>
         <p className="text-xs tracking-widest text-slate-500 mt-0.5">SMART MANUFACTURING INCIDENT COMMAND CENTER</p>
       </div>
 

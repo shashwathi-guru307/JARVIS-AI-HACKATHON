@@ -13,7 +13,7 @@ export default function LoginScreen({ onLogin, error }) {
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#020c14]">
       <div className="border border-cyan-900/40 rounded p-8 w-80 space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold tracking-[0.3em] text-cyan-400">J.A.R.V.I.S.</h1>
+          <h1 className="text-2xl font-bold tracking-[0.3em] text-cyan-400">X.A.Z.E.L.</h1>
           <p className="text-[10px] tracking-widest text-slate-500 mt-1">SECURE ACCESS</p>
         </div>
 
