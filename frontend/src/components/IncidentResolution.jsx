@@ -10,8 +10,12 @@ export default function IncidentResolution({ token, incident, onChange }) {
   useEffect(() => {
     if (!incident?.incident_id) return undefined;
     const poll = async () => {
-      const response = await fetch(`${BASE}/incidents/${incident.incident_id}`);
-      if (response.ok) onChange(await response.json());
+      try {
+        const response = await fetch(`${BASE}/incidents/${incident.incident_id}`);
+        if (response.ok) onChange(await response.json());
+      } catch {
+        setError("Incident service unavailable. Retrying connection...");
+      }
     };
     poll();
     const timer = setInterval(poll, 5000);
